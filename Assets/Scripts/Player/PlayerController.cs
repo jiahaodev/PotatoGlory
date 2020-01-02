@@ -25,6 +25,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(AudioSource))]
+[RequireComponent(typeof(Animator))]
 public class PlayerController : MonoBehaviour
 {
     [Tooltip("角色初始朝向是否朝向右边")]
@@ -51,12 +52,14 @@ public class PlayerController : MonoBehaviour
     //组件引用变量
     private Rigidbody2D m_Rigidbody2D;
     private AudioSource m_AudioSource;
+    private Animator m_Animator;
 
     private void Awake()
     {
         // 获取组件引用
         m_Rigidbody2D = GetComponent<Rigidbody2D>();
         m_AudioSource = GetComponent<AudioSource>();
+        m_Animator = GetComponent<Animator>();
     }
 
     private void Start()
@@ -82,6 +85,10 @@ public class PlayerController : MonoBehaviour
             LayerMask.GetMask("Obstacle")
             );
 
+        //设置动画状态机控制参数
+        m_Animator.SetBool("Grounded",m_GroundedStatus
+            );
+
         //着地时，如果当前不处于跳跃状态且按下了跳跃键，进入准备跳跃状态
         if (m_GroundedStatus && !m_IsJumping && Input.GetButtonDown("Jump"))
         {
@@ -99,6 +106,9 @@ public class PlayerController : MonoBehaviour
     {
         //获取水平输入
         float h = Input.GetAxis("Horizontal");
+
+        //设置动画状态机控制参数
+        m_Animator.SetFloat("Speed", Mathf.Abs(h));
 
         // 若h * m_Rigidbody2D.velocity.x为正数且小于MaxSpeed，表示需要继续加速
         // 若h * m_Rigidbody2D.velocity.x为负数，则表示需要反向加速
@@ -137,6 +147,10 @@ public class PlayerController : MonoBehaviour
         m_IsJumping = true;
         //设置一个竖直向上的力
         m_Rigidbody2D.AddForce(new Vector2(0f, JumpForce));
+
+        //设置动画状态机控制参数
+        m_Animator.SetTrigger("Jump");
+
         //退出准备跳跃的状态，避免重复跳跃
         m_IsReadyToJump = false;
 
