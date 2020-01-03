@@ -20,7 +20,9 @@ public class Missile : MonoBehaviour
     [Tooltip("导弹飞行的速度")]
     public float Speed = 25f;
     [Tooltip("导弹造成的伤害")]
-    public int DamageAmount = 10;
+    public float DamageAmount = 10;
+    [Tooltip("击退力的大小")]
+    public float HurtForce = 50f;
 
     private Rigidbody2D m_Rigidbody2D;
     private CapsuleCollider2D m_Trigger;
@@ -50,11 +52,17 @@ public class Missile : MonoBehaviour
         m_Trigger.isTrigger = true;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collision.CompareTag("Player"))
+        if (collider.CompareTag("Player"))
         {
             return;
+        }
+
+        //对怪物造成伤害
+        if (collider.CompareTag("Enemy"))
+        {
+            collider.GetComponent<Enemy>().TakeDamage(this.transform,HurtForce,DamageAmount);
         }
 
         OnExplode();
