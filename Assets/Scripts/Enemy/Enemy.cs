@@ -75,7 +75,7 @@ public class Enemy : MonoBehaviour
         //对角色造成伤害
         if (collision.gameObject.CompareTag("Player"))
         {
-            collision.gameObject.GetComponent<PlayerHealth>().TakeDamege(
+            collision.gameObject.GetComponent<PlayerHealth>().TakeDamage(
                 this.transform,HurtForce,DamageAmount);
         }
     }

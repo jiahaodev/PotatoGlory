@@ -46,7 +46,7 @@ public class PlayerHealth : MonoBehaviour
 
 
     //受伤函数
-    public void TakeDamege(Transform enemy,float hurtForce, float damage)
+    public void TakeDamage(Transform enemy,float hurtForce, float damage)
     {
         //判断此时时是否处于免伤状态
         if (Time.time <= m_LastFreeDamageTime + FreeDamagePeriod)
