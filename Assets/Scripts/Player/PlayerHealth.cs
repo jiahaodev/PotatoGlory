@@ -29,6 +29,8 @@ public class PlayerHealth : MonoBehaviour
     private float m_LastFreeDamageTime;
     //血量条初始长度
     private Vector3 m_InitHealthScale;
+    //角色当前是否死亡
+    private bool m_IsDead;
 
     private Rigidbody2D m_Rigidbody2D;
 
@@ -42,12 +44,18 @@ public class PlayerHealth : MonoBehaviour
         m_CurrentHP = MaxHP;
         m_LastFreeDamageTime = 0f;
         m_InitHealthScale = HealthSprite.transform.localScale;
+        m_IsDead = false;
     }
 
 
     //受伤函数
     public void TakeDamage(Transform enemy,float hurtForce, float damage)
     {
+        if (m_IsDead)
+        {
+            return;
+        }
+
         //判断此时时是否处于免伤状态
         if (Time.time <= m_LastFreeDamageTime + FreeDamagePeriod)
         {
@@ -85,9 +93,26 @@ public class PlayerHealth : MonoBehaviour
 
     }
 
+    //恢复血量
+    public void Heal(float healAmount) {
+        if (m_IsDead)
+        {
+            return;
+        }
+
+        m_CurrentHP += healAmount;
+
+        UpdateHealthBar();
+
+    }
+
     //更新生命条
     private void UpdateHealthBar()
     {
+
+        //限制当前血量的值
+        m_CurrentHP = Mathf.Clamp(m_CurrentHP,0,MaxHP);
+
         if (HealthSprite != null)
         {
             //更新血量条颜色
@@ -104,6 +129,8 @@ public class PlayerHealth : MonoBehaviour
     //死亡
     private void Death()
     {
+        m_IsDead = true;
+
         // 将碰撞体设置为Trigger，避免和其他物体产生碰撞效果
         Collider2D[] cols = GetComponents<Collider2D>();
         foreach (Collider2D c in cols)

@@ -59,6 +59,14 @@ public class Missile : MonoBehaviour
             return;
         }
 
+        //引爆弹药箱
+        if (collider.tag == "AmmunitionBox")
+        {
+            collider.GetComponent<Bomb>().Explode();
+            return;
+        }
+
+
         //对怪物造成伤害
         if (collider.CompareTag("Enemy"))
         {

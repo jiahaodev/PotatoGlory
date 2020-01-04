@@ -13,6 +13,8 @@ TagManager:
   - ExplosionFX
   - HealthBar
   - Missile
+  - Ground
+  - AmmunitionBox
   layers:
   - Default
   - TransparentFX

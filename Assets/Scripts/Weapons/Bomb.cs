@@ -73,7 +73,7 @@ public class Bomb : MonoBehaviour
 
 
     //爆炸函数
-    private void Explode()
+    public void Explode()
     {
         //获取一定范围内的所有Layer为Enemy或者Player物体
         Collider2D[] objects = Physics2D.OverlapCircleAll(transform.position, BombRadius, m_LayerMask);
@@ -89,7 +89,6 @@ public class Bomb : MonoBehaviour
             if (obj.tag == "Player")
             {
                 obj.GetComponent<PlayerHealth>().TakeDamage(this.transform, BombForce, DamageAmount);
-                continue;
             }
         }
 
@@ -113,7 +112,7 @@ public class Bomb : MonoBehaviour
             Debug.LogWarning("请设置BoomClip");
         }
 
-        //销毁
-        Destroy(gameObject);
+        //直接删除父物体
+        Destroy(transform.root.gameObject);
     }
 }
