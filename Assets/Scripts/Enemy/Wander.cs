@@ -12,7 +12,7 @@ public class Wander : MonoBehaviour
 {
     [Tooltip("是否朝向右边")]
     [SerializeField]
-    private bool FacingRight = true;
+    public bool FacingRight = true;
 
     [Tooltip("怪物水平移动的速度")]
     [SerializeField]
@@ -59,6 +59,8 @@ public class Wander : MonoBehaviour
     //转向函数
     public void Flip()
     {
+        FacingRight = !FacingRight;
+
         m_CurrentMoveSpeed *= -1;
 
         this.transform.localScale = Vector3.Scale(new Vector3(-1, 1, 1), this.transform.localScale);
