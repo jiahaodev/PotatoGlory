@@ -8,6 +8,7 @@
 
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))]
 public class Wander : MonoBehaviour
 {
     [Tooltip("是否朝向右边")]
