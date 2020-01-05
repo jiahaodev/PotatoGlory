@@ -117,8 +117,6 @@ public class JoyStickHandler : MonoBehaviour, IPointerDownHandler, IPointerUpHan
             m_StartPos.z + delta.z
             );
 
-        delta /= Range;
-
         // 这里需要除以Range而不是归一化
         delta /= Range;
 
