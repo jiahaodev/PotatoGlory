@@ -9,7 +9,7 @@
 using System;
 using UnityEngine;
 
-
+// [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(PlayerController))]
 public class PlayerAttack : MonoBehaviour
 {
@@ -54,6 +54,7 @@ public class PlayerAttack : MonoBehaviour
 
     private void Update()
     {
+#if UNITY_STANDALONE       //PC端使用Input来获取输入
         if (Input.GetButtonDown("Fire1")) //左键
         {
             // 发射导弹
@@ -71,6 +72,22 @@ public class PlayerAttack : MonoBehaviour
             // 抛射炸弹
             ProjectileBomb();
         }
+#elif UNITY_IOS || UNITY_ANDROID    //移动端使用InputManager来获取输入
+        if (InputManager.GetButtonDown("Fire1")) {
+            // 发射导弹
+            Fire();
+        }
+
+        if (InputManager.GetButtonDown("Fire2")) {
+            // 放置炸弹
+            LayBomb();
+        }
+
+        if (InputManager.GetButtonDown("Fire3")) {
+            // 抛射炸弹
+            ProjectileBomb();
+        }        
+#endif
     }
 
     //发射导弹
@@ -106,7 +123,8 @@ public class PlayerAttack : MonoBehaviour
     }
 
     //抛射炸弹
-    private void ProjectileBomb() {
+    private void ProjectileBomb()
+    {
         // 判断当前是否至少有一颗炸弹可以释放
         if (GameStateManager.Instance.BombManagerInstance.ReleaseBomb(1) == false)
         {
